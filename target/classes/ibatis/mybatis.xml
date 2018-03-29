@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--iBatis 和 MyBatis 的全局配置文件使用不同的 DTD 约束，在将应用由 iBatis 升级至 MyBatis 时需要注意（两者的映射文件 
+	DTD 约束也不相同） --> 
+ <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"org/apache/ibatis/builder/xml/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="cacheEnabled" value="true" />
+		<setting name="callSettersOnNulls" value="true"/> <!-- 返回空字段 -->
+	</settings>
+</configuration>

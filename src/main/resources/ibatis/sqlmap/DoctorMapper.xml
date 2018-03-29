@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phicomm.doctor.dataaccess.dao.DoctorMapper">
+  <resultMap id="BaseResultMap" type="com.phicomm.doctor.dataaccess.domain.Doctor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="education" jdbcType="INTEGER" property="education" />
+    <result column="work_time" jdbcType="INTEGER" property="workTime" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="title" jdbcType="INTEGER" property="title" />
+    <result column="profession_card_url" jdbcType="VARCHAR" property="professionCardUrl" />
+    <result column="qualification_card_url" jdbcType="VARCHAR" property="qualificationCardUrl" />
+    <result column="practice_card_url" jdbcType="VARCHAR" property="practiceCardUrl" />
+    <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
+    <result column="complete_status" jdbcType="INTEGER" property="completeStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="call" jdbcType="LONGVARCHAR" property="call" />
+    <result column="work_experience" jdbcType="LONGVARCHAR" property="workExperience" />
+    <result column="education_experience" jdbcType="LONGVARCHAR" property="educationExperience" />
+    <result column="works" jdbcType="LONGVARCHAR" property="works" />
+    <result column="good_field" jdbcType="LONGVARCHAR" property="goodField" />
+    <result column="profile" jdbcType="LONGVARCHAR" property="profile" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, openid, head_img_url, name, sex, education, work_time, birthday, province, city, 
+    phone, department_id, department_name, title, profession_card_url, qualification_card_url, 
+    practice_card_url, audit_status, complete_status, create_time, update_time,
+    call, work_experience, education_experience, works, good_field, profile
+  </sql>
+  
+  <select id="getByOpenid" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    from doctor
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insert" parameterType="com.phicomm.doctor.dataaccess.domain.Doctor">
+    insert into doctor (openid, phone, create_time, update_time)
+    values (#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, now(), now())
+  </insert>
+  
+  <update id="updateBySelective" parameterType="com.phicomm.doctor.dataaccess.domain.Doctor">
+    update doctor
+    <set>
+      <if test="headImgUrl != null and headImgUrl != ''">
+        head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null and name != ''">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=INTEGER},
+      </if>
+      <if test="workTime != null">
+        work_time = #{workTime,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null and province != ''">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null and city != ''">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null and departmentName != ''">
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=INTEGER},
+      </if>
+      <if test="professionCardUrl != null and professionCardUrl != ''">
+        profession_card_url = #{professionCardUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationCardUrl != null and qualificationCardUrl != ''">
+        qualification_card_url = #{qualificationCardUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="practiceCardUrl != null and practiceCardUrl != ''">
+        practice_card_url = #{practiceCardUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null">
+        audit_status = #{auditStatus,jdbcType=INTEGER},
+      </if>
+      <if test="completeStatus != null">
+        complete_status = #{completeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="call != null and call != ''">
+        call = #{call,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="workExperience != null and workExperience != ''">
+        work_experience = #{workExperience,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="educationExperience != null and educationExperience != ''">
+        education_experience = #{educationExperience,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="works != null and works != ''">
+        works = #{works,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="goodField != null and goodField != ''">
+        good_field = #{goodField,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="profile != null and profile != ''">
+        profile = #{profile,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
+</mapper>
