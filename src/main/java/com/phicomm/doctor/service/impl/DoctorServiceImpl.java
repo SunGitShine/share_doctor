@@ -61,5 +61,11 @@ public class DoctorServiceImpl implements DoctorService{
 		doctor.setPhone(phone);
 		doctorMapper.insert(doctor);
 	}
+
+	@Override
+	public void completeInfo(Doctor doctor) {
+
+//		ValidateUtil.notNull(doctorMapper.getByOpenid(doctor.getOpenid()), message);
+	}
 	
 }

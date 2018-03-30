@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.Result;
+import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.service.DoctorService;
 import com.phicomm.doctor.util.ParameterUtil;
 import com.phicomm.doctor.util.StringUtil;
@@ -40,6 +41,13 @@ public class DoctorController {
 		}
 		
 		doctorService.bindPhone(phone, smsCode, openid, request.getSession());
+		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("completeInfo")
+	public Result completeInfo() {
+		
+		Doctor doctor = ParameterUtil.parseObject(Doctor.class);
 		return ParameterUtil.commonSuccessResult();
 	}
 }
