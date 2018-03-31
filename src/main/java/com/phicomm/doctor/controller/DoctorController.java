@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.Result;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
+import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
 import com.phicomm.doctor.service.DoctorService;
+import com.phicomm.doctor.service.response.DoctorResponse;
 import com.phicomm.doctor.util.ParameterUtil;
 import com.phicomm.doctor.util.StringUtil;
 import com.phicomm.doctor.util.ValidateUtil;
@@ -21,7 +23,7 @@ public class DoctorController {
 	@Autowired
 	private DoctorService doctorService;
 	
-	@RequestMapping("sendSmsCode")
+	@RequestMapping("/sendSmsCode")
 	public Result sendSmsCode(HttpServletRequest request) {
 		
 		String phone = ParameterUtil.getString("phone");
@@ -44,10 +46,49 @@ public class DoctorController {
 		return ParameterUtil.commonSuccessResult();
 	}
 	
-	@RequestMapping("completeInfo")
+	@RequestMapping("/completeInfo")
 	public Result completeInfo() {
 		
 		Doctor doctor = ParameterUtil.parseObject(Doctor.class);
+		doctorService.completeInfo(doctor);
+		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("findById")
+	public Result findByOpenid(){
+		
+		String openid = ParameterUtil.getString("openid");
+		DoctorResponse response = doctorService.findById(openid);
+		return ParameterUtil.commonSuccessResult("doctor", response);
+	}
+	
+	@RequestMapping("/findByPage")
+	public Result findByPage(){
+		
+		Integer departmentId = ParameterUtil.getInteger("departmentId");
+		Integer hospitalId = ParameterUtil.getInteger("hospitalId");
+		return null;
+	}
+	
+	@RequestMapping("/relese")
+	public Result relese(){
+		
+		String openid = ParameterUtil.getString("openid");
+		DoctorRelese relese = ParameterUtil.parseObject(DoctorRelese.class);
+		ValidateUtil.isNotBlank(openid, "openid不能为空");
+		ValidateUtil.notNull(relese.getStartTime(), "开始时间不能为空");
+		ValidateUtil.notNull(relese.getEndTime(), "结束时间不能为空");
+		
+		doctorService.relese(openid, relese);
+		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("/updateReleseStatus")
+	public Result updateReleseStatus(){
+		
+		Integer doctorReleseId = ParameterUtil.getInteger("doctorReleseId");
+		Integer status = ParameterUtil.getInteger("status");
+		doctorService.updateReleseStatus(doctorReleseId, status);
 		return ParameterUtil.commonSuccessResult();
 	}
 }

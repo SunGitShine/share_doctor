@@ -173,5 +173,15 @@ public class StringUtil extends StringUtils {
 		}
 	}
 	
-	
+	public static Boolean isNotEmpty(String... agrs){
+		
+		Boolean result = true;
+		for(String str:agrs){
+			if(isEmpty(str)){
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
 }
