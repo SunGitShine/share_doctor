@@ -17,7 +17,7 @@ public interface DoctorService {
 	
 	void completeInfo(Doctor doctor);
 	
-	DoctorResponse findById(String openid);
+	DoctorResponse findByOpenid(String openid);
 	
 	Integer totalCount(Integer departmentId, Integer hospitalId);
 	

@@ -54,11 +54,11 @@ public class DoctorController {
 		return ParameterUtil.commonSuccessResult();
 	}
 	
-	@RequestMapping("findById")
+	@RequestMapping("findByOpenid")
 	public Result findByOpenid(){
 		
 		String openid = ParameterUtil.getString("openid");
-		DoctorResponse response = doctorService.findById(openid);
+		DoctorResponse response = doctorService.findByOpenid(openid);
 		return ParameterUtil.commonSuccessResult("doctor", response);
 	}
 	

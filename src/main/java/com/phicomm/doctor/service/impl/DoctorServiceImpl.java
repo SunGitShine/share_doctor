@@ -89,7 +89,7 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 	
 	@Override
-	public DoctorResponse findById(String openid) {
+	public DoctorResponse findByOpenid(String openid) {
 		
 		ValidateUtil.isNotBlank(openid, "openid不能为空");
 		Doctor doctor = doctorMapper.getByOpenid(openid);
