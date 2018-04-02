@@ -129,10 +129,20 @@
 		<property name="order" value="0" />
 	</bean>
 	
-	<!-- <bean id="departmentMysqlDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.sztx.wsy.dataaccess.dao.DepartmentMysqlDAO"></property>
+	<bean id="doctorMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DoctorMapper"></property>
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean> -->
+	</bean>
+	
+	<bean id="hospitalMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.HospitalMapper"></property>
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="doctorReleseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DoctorReleseMapper"></property>
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 	
 	<mvc:interceptors>  
         <!-- <mvc:interceptor>  

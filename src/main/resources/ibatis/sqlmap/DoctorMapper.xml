@@ -32,13 +32,13 @@
   </resultMap>
   
   <sql id="Base_Column_List">
-    id, openid, head_img_url, name, sex, education, work_time, birthday, province, city, 
+    id, openid, head_img_url, `name`, sex, education, work_time, birthday, province, city, 
     phone, department_id, department_name, title, profession_card_url, qualification_card_url, 
     practice_card_url, audit_status, complete_status, create_time, update_time,
-    call, work_experience, education_experience, works, good_field, profile
+    `call`, work_experience, education_experience, works, good_field, `profile`
   </sql>
   
-  <select id="getByOpenid" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="getByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from doctor

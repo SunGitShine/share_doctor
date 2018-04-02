@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.dao.DoctorMapper;
@@ -39,6 +40,7 @@ public class DoctorServiceImpl implements DoctorService{
 	public String sendSmsCode(String phone, HttpSession session) {
 		
 		String smsCode = getFourRandom();
+		log.info("发送的短信验证码：" + smsCode);
 		//TODO 发送短信
 		session.setAttribute(SMS_CODE_PREFIX + phone, smsCode);
 		return smsCode;
@@ -99,6 +101,10 @@ public class DoctorServiceImpl implements DoctorService{
 		
 		DoctorResponse response = new DoctorResponse();
 		BeanUtils.copyProperties(doctor, response);
+		response.setCall(JSONObject.parse(doctor.getCall()));
+		response.setWorkExperience(JSONObject.parse(doctor.getWorkExperience()));
+		response.setWorks(JSONObject.parse(doctor.getWorks()));
+		response.setEducationExperience(JSONObject.parse(doctor.getEducationExperience()));
 		//医生坐诊
 		DoctorRelese doctorRelese = doctorReleseMapper.getByDoctorId(doctor.getId());
 		if(doctorRelese != null){
