@@ -26,4 +26,6 @@ public interface DoctorService {
 	void relese(String openid, DoctorRelese doctorRelese);
 	
 	void updateReleseStatus(Integer doctorReleseId, Integer status);
+	
+	void deleteRelese(Integer doctorReleseId);
 }

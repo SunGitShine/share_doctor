@@ -31,4 +31,8 @@
     set status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <delete id="delete" parameterType="java.lang.Integer">
+  	delete from doctor_relese where id = #{id} 
+  </delete>
 </mapper>

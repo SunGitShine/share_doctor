@@ -91,4 +91,12 @@ public class DoctorController {
 		doctorService.updateReleseStatus(doctorReleseId, status);
 		return ParameterUtil.commonSuccessResult();
 	}
+	
+	@RequestMapping("/deleteRelese")
+	public Result deleteRelese() {
+		
+		Integer doctorReleseId = ParameterUtil.getInteger("doctorReleseId");
+		doctorService.deleteRelese(doctorReleseId);
+		return ParameterUtil.commonSuccessResult();
+	}
 }

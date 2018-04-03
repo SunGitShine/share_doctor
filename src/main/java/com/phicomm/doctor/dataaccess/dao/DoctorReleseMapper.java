@@ -9,4 +9,6 @@ public interface DoctorReleseMapper {
 	void insert(DoctorRelese doctorRelese);
 	
 	void updateStatus(DoctorRelese doctorRelese);
+	
+	void delete(Integer id);
 }

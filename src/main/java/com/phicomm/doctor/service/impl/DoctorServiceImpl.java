@@ -79,7 +79,7 @@ public class DoctorServiceImpl implements DoctorService{
 	public void completeInfo(Doctor doctor) {
 
 		if(StringUtil.isNotEmpty(doctor.getOpenid(), doctor.getName(), doctor.getProvince(), doctor.getCity(), 
-				doctor.getPhone(), doctor.getDepartmentName(), doctor.getPracticeCardUrl(), doctor.getProfessionCardUrl(),
+				doctor.getDepartmentName(), doctor.getPracticeCardUrl(), doctor.getProfessionCardUrl(),
 				doctor.getQualificationCardUrl())){
 			throw new BusinessException("有必填项未填写");
 		}
@@ -150,4 +150,10 @@ public class DoctorServiceImpl implements DoctorService{
 		
 		doctorReleseMapper.updateStatus(doctorRelese);
 	}
+
+	@Override
+	public void deleteRelese(Integer doctorReleseId) {
+		
+		doctorReleseMapper.delete(doctorReleseId);
+	}		
 }
