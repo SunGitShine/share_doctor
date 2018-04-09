@@ -33,4 +33,23 @@ public class HospitalController {
 		hospitalService.release(openid, release);
 		return ParameterUtil.commonSuccessResult();
 	}
+	
+	@RequestMapping("/updateReleaseStatus")
+	public Result updateReleaseStatus() {
+		
+		Integer releaseId = ParameterUtil.getInteger("releaseId");
+		Integer status = ParameterUtil.getInteger("status");
+		Integer auditStatus = ParameterUtil.getInteger("auditStatus");
+		
+		hospitalService.updateReleaseStatus(releaseId, status, auditStatus);
+		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("/deleteRelease")
+	public Result deleteRelease() {
+		
+		Integer releaseId = ParameterUtil.getInteger("releaseId");
+		hospitalService.deleteRelease(releaseId);
+		return ParameterUtil.commonSuccessResult();
+	}
 }

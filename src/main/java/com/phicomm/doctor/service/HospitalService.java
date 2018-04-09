@@ -10,4 +10,8 @@ public interface HospitalService {
 	void completeInfo(Hospital hospital);
 	
 	void release(String openid, HospitalRelease release);
+	
+	void updateReleaseStatus(Integer releaseId, Integer status, Integer auditStatus);
+	
+	void deleteRelease(Integer releaseId);
 }

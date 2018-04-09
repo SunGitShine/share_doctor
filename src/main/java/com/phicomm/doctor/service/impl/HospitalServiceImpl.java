@@ -51,6 +51,17 @@ public class HospitalServiceImpl implements HospitalService{
 		ValidateUtil.isNotTrue(hospital.getAuditStatus() == 0 || hospital.getAuditStatus() == 2, "信息审核状态异常，不能发布信息");
 		
 		hospitalReleaseMapper.insert(release);
+	}
+
+	@Override
+	public void updateReleaseStatus(Integer releaseId, Integer status, Integer auditStatus) {
+		hospitalReleaseMapper.updateStatus(releaseId, status, null);
+	}
+
+	@Override
+	public void deleteRelease(Integer releaseId) {
+		
+		hospitalReleaseMapper.deleteById(releaseId);
 	}	
 	
 }
