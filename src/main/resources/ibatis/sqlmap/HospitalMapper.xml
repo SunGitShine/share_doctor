@@ -17,15 +17,13 @@
     <result column="complete_status" jdbcType="INTEGER" property="completeStatus" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="good_field" jdbcType="LONGVARCHAR" property="goodField" />
     <result column="profile" jdbcType="LONGVARCHAR" property="profile" />
     <result column="image_url" jdbcType="LONGVARCHAR" property="imageUrl" />
-    <result column="works" jdbcType="LONGVARCHAR" property="works" />
   </resultMap>
   
   <sql id="Base_Column_List">
     id, openid, name, logo_img_url, address, province, city, phone, scale, tag, business_licence_url, 
-    audit_status, complete_status, create_time, update_time, good_field, profile, image_url, works
+    audit_status, complete_status, create_time, update_time, profile, image_url
   </sql>
   
   <select id="getByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -34,6 +32,24 @@
     from hospital
     where openid = #{openid,jdbcType=VARCHAR}
   </select>
+  
+  <update id="completeInfo" parameterType="com.phicomm.doctor.dataaccess.domain.Hospital">
+    update hospital
+    set 
+      name = #{name,jdbcType=VARCHAR},
+      logo_img_url = #{logoImgUrl,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+      address = #{address,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      scale = #{scale,jdbcType=INTEGER},
+      tag = #{tag,jdbcType=VARCHAR},
+      business_licence_url = #{businessLicenceUrl,jdbcType=VARCHAR},
+      complete_status = 1,
+      update_time = now()
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
+  
   <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hospital
     where id = #{id,jdbcType=INTEGER}

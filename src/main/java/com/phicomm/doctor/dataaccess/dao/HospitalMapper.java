@@ -7,4 +7,6 @@ import com.phicomm.doctor.dataaccess.domain.Hospital;
 public interface HospitalMapper {
 
 	Hospital getByOpenid(@Param("openid") String openid);
+	
+	void completeInfo(Hospital hospital);
 }
