@@ -11,8 +11,6 @@
     <result column="education" jdbcType="INTEGER" property="education" />
     <result column="work_time" jdbcType="INTEGER" property="workTime" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="province" jdbcType="VARCHAR" property="province" />
-    <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="money_type" jdbcType="INTEGER" property="moneyType" />
     <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -23,8 +21,8 @@
   </resultMap>
   
   <sql id="Base_Column_List">
-    id, hospital_id, department_id, department_name, title, doctor_title, education, work_time, time, 
-    province, city, money_type, audit_status, status, create_time, update_time, job_description, job_require
+    id, hospital_id, department_id, department_name, `title`, doctor_title, education, work_time, `time`, 
+    money_type, audit_status, `status`, create_time, update_time, job_description, job_require
   </sql>
   
   <!-- <select id="selectByHid" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
@@ -42,28 +40,21 @@
   <insert id="insert" parameterType="com.phicomm.doctor.dataaccess.domain.HospitalRelease">
     insert into hospital_release (hospital_id, department_id, 
       department_name, title, doctor_title, education, 
-      work_time, time, province, 
-      city, money_type, audit_status, 
-      status, create_time, update_time, 
+      work_time, time, money_type, create_time, update_time, 
       job_description, job_require)
     values (#{hospitalId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
       #{departmentName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{doctorTitle,jdbcType=INTEGER}, #{education,jdbcType=INTEGER}, 
-      #{workTime,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{moneyType,jdbcType=INTEGER}, now(), now(), 
+      #{workTime,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{moneyType,jdbcType=INTEGER}, now(), now(), 
       #{jobDescription,jdbcType=LONGVARCHAR}, #{jobRequire,jdbcType=LONGVARCHAR})
   </insert>
   
   <update id="updateStatus">
   	update hospital_release
   	<set>
-  		<if test="status != null">
-  			status = #{status,jdbcType=INTEGER},
-  		</if>
-  		<if test="auditStatus != null">
-  			audit_status = #{auditStatus,jdbcType=INTEGER},
-  		</if>
+  		<if test="status != null">`status` = #{status,jdbcType=INTEGER},</if>
+  		<if test="auditStatus != null">audit_status = #{auditStatus,jdbcType=INTEGER},</if>
+  		update_time = now()
   	</set>
-  	update_time = now()
   	where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

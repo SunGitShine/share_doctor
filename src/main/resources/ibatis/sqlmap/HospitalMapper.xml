@@ -9,6 +9,7 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="INTEGER" property="area" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="scale" jdbcType="INTEGER" property="scale" />
     <result column="tag" jdbcType="VARCHAR" property="tag" />
@@ -22,9 +23,14 @@
   </resultMap>
   
   <sql id="Base_Column_List">
-    id, openid, name, logo_img_url, address, province, city, phone, scale, tag, business_licence_url, 
+    id, openid, `name`, logo_img_url, address, province, city, area, phone, scale, tag, business_licence_url, 
     audit_status, complete_status, create_time, update_time, profile, image_url
   </sql>
+  
+  <insert id="bindPhone" parameterType="com.phicomm.doctor.dataaccess.domain.Hospital">
+  	insert into hospital(openid, phone, create_time, update_time)
+  	values(#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, now(), now())
+  </insert>
   
   <select id="getByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -36,14 +42,17 @@
   <update id="completeInfo" parameterType="com.phicomm.doctor.dataaccess.domain.Hospital">
     update hospital
     set 
-      name = #{name,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
       logo_img_url = #{logoImgUrl,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR}
+      phone = #{phone,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=INTEGER},
       scale = #{scale,jdbcType=INTEGER},
       tag = #{tag,jdbcType=VARCHAR},
+      profile = #{profile,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
       business_licence_url = #{businessLicenceUrl,jdbcType=VARCHAR},
       complete_status = 1,
       update_time = now()

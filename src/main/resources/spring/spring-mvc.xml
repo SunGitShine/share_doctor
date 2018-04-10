@@ -144,6 +144,16 @@
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	
+	<bean id="hospitalReleaseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.HospitalReleaseMapper"></property>
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="departmentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DepartmentMapper"></property>
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
 	<mvc:interceptors>  
         <!-- <mvc:interceptor>  
             <mvc:mapping path="/**" />

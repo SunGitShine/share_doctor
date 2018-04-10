@@ -8,5 +8,7 @@ public interface HospitalMapper {
 
 	Hospital getByOpenid(@Param("openid") String openid);
 	
+	void bindPhone(Hospital hospital);
+	
 	void completeInfo(Hospital hospital);
 }

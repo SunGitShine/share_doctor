@@ -2,10 +2,13 @@ package com.phicomm.doctor.service;
 
 import com.phicomm.doctor.dataaccess.domain.Hospital;
 import com.phicomm.doctor.dataaccess.domain.HospitalRelease;
+import com.phicomm.doctor.service.response.HospitalResponse;
 
 public interface HospitalService {
 
-	Hospital getByOpenid(String openid);
+	HospitalResponse getByOpenid(String openid);
+	
+	void bindPhone(String phone, String openid);
 	
 	void completeInfo(Hospital hospital);
 	

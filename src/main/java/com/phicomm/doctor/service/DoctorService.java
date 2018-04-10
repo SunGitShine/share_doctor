@@ -11,8 +11,6 @@ import com.phicomm.doctor.service.response.DoctorResponse;
 
 public interface DoctorService {
 
-	String sendSmsCode(String phone, HttpSession session);
-	
 	void bindPhone(String phone, String smsCode, String openid, HttpSession session);
 	
 	void completeInfo(Doctor doctor);
