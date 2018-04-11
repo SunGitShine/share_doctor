@@ -1,18 +1,22 @@
 package com.phicomm.doctor.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.common.domain.Result;
 import com.phicomm.doctor.dataaccess.domain.Hospital;
 import com.phicomm.doctor.dataaccess.domain.HospitalRelease;
 import com.phicomm.doctor.service.HospitalService;
+import com.phicomm.doctor.service.response.ReleaseListResponse;
 import com.phicomm.doctor.util.ParameterUtil;
 
 @Controller
 @RequestMapping("/hospital")
-public class HospitalController {
+public class HospitalController extends BaseController{
 	
 	@Autowired
 	private HospitalService hospitalService;
@@ -51,5 +55,19 @@ public class HospitalController {
 		Integer releaseId = ParameterUtil.getInteger("releaseId");
 		hospitalService.deleteRelease(releaseId);
 		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("/findReleaseListPage")
+	public Result findReleaseListPage() {
+		
+		String hospitalOpenid = ParameterUtil.getString("hospitalOpenid");
+		String doctorOpenid = ParameterUtil.getString("doctorOpenid");
+		
+		PageQuery pageQuery = getPageQuery();
+		
+		List<ReleaseListResponse> releaseList = hospitalService.findReleaseListPage(hospitalOpenid, doctorOpenid, pageQuery);
+		Integer releaseCount = hospitalService.findReleaseCount(hospitalOpenid, doctorOpenid);
+		
+		return ParameterUtil.pageSuccessResult(releaseCount, releaseList);
 	}
 }

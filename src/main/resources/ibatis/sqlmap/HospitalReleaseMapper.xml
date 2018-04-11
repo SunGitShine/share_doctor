@@ -25,13 +25,6 @@
     money_type, audit_status, `status`, create_time, update_time, job_description, job_require
   </sql>
   
-  <!-- <select id="selectByHid" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    from hospital_release
-    where hospital_id = #{hospitalId,jdbcType=INTEGER}
-  </select> -->
-  
   <delete id="deleteById" parameterType="java.lang.Integer">
     delete from hospital_release
     where id = #{id,jdbcType=INTEGER}
@@ -57,4 +50,68 @@
   	</set>
   	where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="findReleaseListPage" resultType="com.phicomm.doctor.service.response.ReleaseListResponse">
+  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.scale,hr.title,hr.department_name AS departmentName,
+	hr.doctor_title AS doctorTitle,hr.work_time AS workTime,hr.time,hr.money_type AS moneyType,
+	hr.audit_status AS auditStatus,hr.create_time AS createTime
+	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
+	WHERE 1=1
+	<if test="request.hospitalOpenid != null and request.hospitalOpenid != ''">
+		AND h.openid = #{request.hospitalOpenId}
+	</if>
+	<if test="request.hospitalOpenid == null or request.hospitalOpenid == ''">
+		<if test="request.area != null">
+			AND h.area = #{request.area}
+		</if>
+		<if test="request.doctorTitle != null">
+			AND hr.doctor_title <![CDATA[<=]]> #{request.doctorTitle}
+		</if>
+		<if test="request.departmentId != null">
+			AND hr.department_id = #{request.departmentId}
+		</if>
+		<if test="request.startTime != null">
+			AND DATE_FORMAT((date_add(hr.time, interval 5 day)),'%Y-%m-%d') <![CDATA[>=]]> #{request.startTime}
+		</if>
+		<if test="request.endTime != null">
+			AND DATE_FORMAT((date_sub(hr.time, interval 5 day)),'%Y-%m-%d') <![CDATA[<=]]> #{request.startTime}
+		</if>
+		AND hr.audit_status = 1
+		AND hr.status = 1
+	</if>
+	
+	order by create_time desc
+
+    <if test="pageQuery != null">
+      limit #{pageQuery.start} , #{pageQuery.pageSize} 
+    </if>
+  </select>
+  
+  <select id="findReleaseCount" resultType="java.lang.Integer">
+  	SELECT COUNT(1)
+	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
+	WHERE 1=1
+	<if test="request.hospitalOpenid != null and request.hospitalOpenid != ''">
+		AND h.openid = #{request.hospitalOpenId}
+	</if>
+	<if test="request.hospitalOpenid == null or request.hospitalOpenid == ''">
+		<if test="request.area != null">
+			AND h.area = #{request.area}
+		</if>
+		<if test="request.doctorTitle != null">
+			AND hr.doctor_title <![CDATA[<=]]> #{request.doctorTitle}
+		</if>
+		<if test="request.departmentId != null">
+			AND hr.department_id = #{request.departmentId}
+		</if>
+		<if test="request.startTime != null">
+			AND DATE_FORMAT((date_add(hr.time, interval 5 day)),'%Y-%m-%d') <![CDATA[>=]]> #{request.startTime}
+		</if>
+		<if test="request.endTime != null">
+			AND DATE_FORMAT((date_sub(hr.time, interval 5 day)),'%Y-%m-%d') <![CDATA[<=]]> #{request.startTime}
+		</if>
+		AND hr.audit_status = 1
+		AND hr.status = 1
+	</if>
+  </select>
 </mapper>

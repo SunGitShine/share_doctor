@@ -14,6 +14,7 @@ public class DoctorResponse{
 	private Date birthday;
 	private String province;
 	private String city;
+	private Integer area;
 	private String phone;
 	private Integer departmentId;
 	private String departmentName;
@@ -221,5 +222,11 @@ public class DoctorResponse{
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public Integer getArea() {
+		return area;
+	}
+	public void setArea(Integer area) {
+		this.area = area;
 	}
 }

@@ -1,17 +1,24 @@
 package com.phicomm.doctor.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.phicomm.doctor.common.domain.BusinessException;
+import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.dao.HospitalMapper;
 import com.phicomm.doctor.dataaccess.dao.HospitalReleaseMapper;
 import com.phicomm.doctor.dataaccess.domain.Hospital;
 import com.phicomm.doctor.dataaccess.domain.HospitalRelease;
+import com.phicomm.doctor.service.DoctorService;
 import com.phicomm.doctor.service.HospitalService;
+import com.phicomm.doctor.service.request.ReleaseListRequest;
+import com.phicomm.doctor.service.response.DoctorResponse;
 import com.phicomm.doctor.service.response.HospitalResponse;
+import com.phicomm.doctor.service.response.ReleaseListResponse;
 import com.phicomm.doctor.util.ChainAreaUtil;
 import com.phicomm.doctor.util.StringUtil;
 import com.phicomm.doctor.util.ValidateUtil;
@@ -24,6 +31,9 @@ public class HospitalServiceImpl implements HospitalService{
 	
 	@Autowired
 	private HospitalReleaseMapper hospitalReleaseMapper;
+	
+	@Autowired
+	private DoctorService doctorService;
 
 	@Override
 	public HospitalResponse getByOpenid(String openid) {
@@ -87,6 +97,34 @@ public class HospitalServiceImpl implements HospitalService{
 		hospital.setOpenid(openid);
 		hospital.setPhone(phone);
 		hospitalMapper.bindPhone(hospital);
+	}
+
+	@Override
+	public List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenId, PageQuery pageQuery) {
+		
+		return hospitalReleaseMapper.findReleaseListPage(makeRequestParm(hospitalOpenid, doctorOpenId), pageQuery);
+	}
+
+	@Override
+	public Integer findReleaseCount(String hospitalOpenid, String doctorOpenid) {
+		
+		return hospitalReleaseMapper.findReleaseCount(makeRequestParm(hospitalOpenid, doctorOpenid));
 	}	
 	
+	public ReleaseListRequest makeRequestParm(String hospitalOpenid, String doctorOpenid) {
+		
+		ReleaseListRequest request = new ReleaseListRequest();
+		request.setHospitalOpenid(hospitalOpenid);
+		
+		DoctorResponse doctor = doctorService.findByOpenid(doctorOpenid);
+		ValidateUtil.notNull(doctor, "不存在医生信息");
+		
+		request.setArea(doctor.getArea());
+		request.setDepartmentId(doctor.getDepartmentId());
+		request.setDoctorTitle(doctor.getTitle());
+		request.setStartTime(doctor.getStartTime());
+		request.setEndTime(doctor.getEndTime());
+		
+		return request;
+	}
 }

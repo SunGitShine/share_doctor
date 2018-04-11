@@ -1,15 +1,21 @@
 package com.phicomm.doctor.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.Result;
 import com.phicomm.doctor.common.domain.ResultCode;
-import com.phicomm.doctor.dataaccess.domain.Hospital;
 import com.phicomm.doctor.service.CommonService;
 import com.phicomm.doctor.service.DoctorService;
 import com.phicomm.doctor.service.HospitalService;
@@ -18,10 +24,13 @@ import com.phicomm.doctor.service.response.HospitalResponse;
 import com.phicomm.doctor.util.ParameterUtil;
 import com.phicomm.doctor.util.StringUtil;
 import com.phicomm.doctor.util.ValidateUtil;
+import com.phicomm.doctor.util.http.HttpClientUtil;
 
 @Controller
 @RequestMapping("/common")
 public class CommonController {
+	
+	private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 	
 	@Autowired
 	private CommonService commonService;
@@ -93,5 +102,27 @@ public class CommonController {
 		}
 		
 		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("getOpenid")
+	public Result getOpenid() {
+		
+		String appid = ParameterUtil.getString("appid");
+		String secret = ParameterUtil.getString("secret");
+		String grantType = ParameterUtil.getString("grantType");
+		String jsCode = ParameterUtil.getString("jsCode");
+		
+		String url = "https://api.weixin.qq.com/sns/jscode2session";
+		String params = "appid=" + appid + "&secret=" + secret + "&grant_type=" + grantType + "&js_code=" + jsCode;
+		String result = HttpClientUtil.doGet(url, params, null);
+		return ParameterUtil.commonSuccessResult("result", result);
+	}
+	
+	@RequestMapping(value = "/upload")
+	public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+	    String filePath = commonService.uploadFile(file, request);  
+	    log.info("filePath:" + filePath);
+	    return ParameterUtil.commonSuccessResult("picPath", filePath);
 	}
 }
