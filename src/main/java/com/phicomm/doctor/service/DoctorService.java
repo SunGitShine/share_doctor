@@ -2,8 +2,6 @@ package com.phicomm.doctor.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
@@ -11,7 +9,7 @@ import com.phicomm.doctor.service.response.DoctorResponse;
 
 public interface DoctorService {
 
-	void bindPhone(String phone, String smsCode, String openid, HttpSession session);
+	void bindPhone(String phone, String openid, String name, String headImgUrl);
 	
 	void completeInfo(Doctor doctor);
 	

@@ -35,11 +35,12 @@ public class DoctorController {
 		return ParameterUtil.commonSuccessResult("doctor", response);
 	}
 	
-	@RequestMapping("/findByPage")
-	public Result findByPage(){
+	@RequestMapping("/findDoctorListPage")
+	public Result findDoctorListPage(){
 		
+		String hospitalOpenid = ParameterUtil.getString("hospitalOpenid");
+		String doctorOpenid = ParameterUtil.getString("doctorOpenid");
 		Integer departmentId = ParameterUtil.getInteger("departmentId");
-		Integer hospitalId = ParameterUtil.getInteger("hospitalId");
 		return null;
 	}
 	

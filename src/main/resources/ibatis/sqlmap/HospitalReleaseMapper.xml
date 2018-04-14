@@ -52,7 +52,8 @@
   </update>
   
   <select id="findReleaseListPage" resultType="com.phicomm.doctor.service.response.ReleaseListResponse">
-  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.scale,hr.title,hr.department_name AS departmentName,
+  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.scale,
+  	hr.id,hr.title,hr.department_name AS departmentName,
 	hr.doctor_title AS doctorTitle,hr.work_time AS workTime,hr.time,hr.money_type AS moneyType,
 	hr.audit_status AS auditStatus,hr.create_time AS createTime
 	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
@@ -79,8 +80,13 @@
 		AND hr.audit_status = 1
 		AND hr.status = 1
 	</if>
+	<if test="departmentId != null">
+		AND hr.department_id = #{request.departmentId}
+		AND hr.audit_status = 1
+		AND hr.status = 1
+	</if>
 	
-	order by create_time desc
+	order by hr.create_time desc
 
     <if test="pageQuery != null">
       limit #{pageQuery.start} , #{pageQuery.pageSize} 
@@ -113,5 +119,23 @@
 		AND hr.audit_status = 1
 		AND hr.status = 1
 	</if>
+	<if test="departmentId != null">
+		AND hr.department_id = #{request.departmentId}
+		AND hr.audit_status = 1
+		AND hr.status = 1
+	</if>
+  </select>
+  
+  <select id="findById" resultType="com.phicomm.doctor.service.response.ReleaseListResponse">
+  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.tag,h.openid,
+  	hr.id,hr.title,hr.department_name AS departmentName,
+	hr.doctor_title AS doctorTitle,hr.work_time AS workTime,hr.time,hr.money_type AS moneyType,
+	hr.audit_status AS auditStatus,hr.create_time AS createTime,hr.education,
+	hr.job_description AS jobDescription,hr.job_require AS jobRequire
+	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
+	WHERE 
+	hr.audit_status = 1
+	AND hr.status = 1
+	AND hr.id = #{releaseId,jdbcType=INTEGER}
   </select>
 </mapper>

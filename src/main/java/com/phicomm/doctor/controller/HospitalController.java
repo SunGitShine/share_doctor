@@ -62,12 +62,21 @@ public class HospitalController extends BaseController{
 		
 		String hospitalOpenid = ParameterUtil.getString("hospitalOpenid");
 		String doctorOpenid = ParameterUtil.getString("doctorOpenid");
+		Integer departmentId = ParameterUtil.getInteger("departmentId");
 		
 		PageQuery pageQuery = getPageQuery();
 		
-		List<ReleaseListResponse> releaseList = hospitalService.findReleaseListPage(hospitalOpenid, doctorOpenid, pageQuery);
-		Integer releaseCount = hospitalService.findReleaseCount(hospitalOpenid, doctorOpenid);
+		List<ReleaseListResponse> releaseList = hospitalService.findReleaseListPage(hospitalOpenid, doctorOpenid,departmentId,pageQuery);
+		Integer releaseCount = hospitalService.findReleaseCount(hospitalOpenid, doctorOpenid, departmentId);
 		
 		return ParameterUtil.pageSuccessResult(releaseCount, releaseList);
+	}
+	
+	@RequestMapping("/findReleaseById")
+	public Result findReleaseById() {
+		
+		Integer releaseId = ParameterUtil.getInteger("releaseId");
+		ReleaseListResponse response = hospitalService.findReleaseById(releaseId);
+		return ParameterUtil.commonSuccessResult("release", response);
 	}
 }

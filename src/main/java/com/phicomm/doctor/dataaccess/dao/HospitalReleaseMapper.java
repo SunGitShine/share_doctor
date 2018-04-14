@@ -17,8 +17,10 @@ public interface HospitalReleaseMapper {
 	
 	void updateStatus(@Param("id")Integer id, @Param("status")Integer status, @Param("auditStatus")Integer auditStatus);
 	
-	List<ReleaseListResponse> findReleaseListPage(@Param("request")ReleaseListRequest request,
+	List<ReleaseListResponse> findReleaseListPage(@Param("request")ReleaseListRequest request, @Param("departmentId")Integer departmentId,
 			@Param("pageQuery")PageQuery pageQuery);
 	
-	Integer findReleaseCount(@Param("request")ReleaseListRequest request);
+	Integer findReleaseCount(@Param("request")ReleaseListRequest request, @Param("departmentId")Integer departmentId);
+	
+	ReleaseListResponse findById(@Param("releaseId")Integer releaseId);
 }

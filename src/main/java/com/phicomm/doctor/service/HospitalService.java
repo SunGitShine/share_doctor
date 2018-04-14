@@ -12,7 +12,7 @@ public interface HospitalService {
 
 	HospitalResponse getByOpenid(String openid);
 	
-	void bindPhone(String phone, String openid);
+	void bindPhone(String phone, String openid, String name, String headImgUrl);
 	
 	void completeInfo(Hospital hospital);
 	
@@ -22,7 +22,9 @@ public interface HospitalService {
 	
 	void deleteRelease(Integer releaseId);
 	
-	List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenid, PageQuery pageQuery);
+	List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenid, Integer departmentId, PageQuery pageQuery);
 	
-	Integer findReleaseCount(String hospitalOpenid, String doctorOpenid);
+	Integer findReleaseCount(String hospitalOpenid, String doctorOpenid, Integer departmentId);
+	
+	ReleaseListResponse findReleaseById(Integer releaseId);
 }

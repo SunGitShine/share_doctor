@@ -2,8 +2,6 @@ package com.phicomm.doctor.service.impl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +29,13 @@ public class DoctorServiceImpl implements DoctorService{
 	private DoctorReleseMapper doctorReleseMapper;
 	
 	@Override
-	public void bindPhone(String phone, String smsCode, String openid, HttpSession session) {
+	public void bindPhone(String phone, String openid, String name, String headImgUrl) {
 		
 		Doctor doctor = new Doctor();
 		doctor.setOpenid(openid);
 		doctor.setPhone(phone);
+		doctor.setName(name);
+		doctor.setHeadImgUrl(headImgUrl);
 		doctorMapper.insert(doctor);
 	}
 

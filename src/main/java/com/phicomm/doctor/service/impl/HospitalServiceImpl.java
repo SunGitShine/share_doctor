@@ -91,24 +91,26 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
-	public void bindPhone(String phone, String openid) {
+	public void bindPhone(String phone, String openid, String name, String headImgUrl) {
 		
 		Hospital hospital = new Hospital();
 		hospital.setOpenid(openid);
 		hospital.setPhone(phone);
+		hospital.setName(name);
+		hospital.setLogoImgUrl(headImgUrl);
 		hospitalMapper.bindPhone(hospital);
 	}
 
 	@Override
-	public List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenId, PageQuery pageQuery) {
+	public List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenId, Integer departmentId, PageQuery pageQuery) {
 		
-		return hospitalReleaseMapper.findReleaseListPage(makeRequestParm(hospitalOpenid, doctorOpenId), pageQuery);
+		return hospitalReleaseMapper.findReleaseListPage(makeRequestParm(hospitalOpenid, doctorOpenId), departmentId, pageQuery);
 	}
 
 	@Override
-	public Integer findReleaseCount(String hospitalOpenid, String doctorOpenid) {
+	public Integer findReleaseCount(String hospitalOpenid, String doctorOpenid, Integer departmentId) {
 		
-		return hospitalReleaseMapper.findReleaseCount(makeRequestParm(hospitalOpenid, doctorOpenid));
+		return hospitalReleaseMapper.findReleaseCount(makeRequestParm(hospitalOpenid, doctorOpenid), departmentId);
 	}	
 	
 	public ReleaseListRequest makeRequestParm(String hospitalOpenid, String doctorOpenid) {
@@ -116,15 +118,26 @@ public class HospitalServiceImpl implements HospitalService{
 		ReleaseListRequest request = new ReleaseListRequest();
 		request.setHospitalOpenid(hospitalOpenid);
 		
-		DoctorResponse doctor = doctorService.findByOpenid(doctorOpenid);
-		ValidateUtil.notNull(doctor, "不存在医生信息");
-		
-		request.setArea(doctor.getArea());
-		request.setDepartmentId(doctor.getDepartmentId());
-		request.setDoctorTitle(doctor.getTitle());
-		request.setStartTime(doctor.getStartTime());
-		request.setEndTime(doctor.getEndTime());
+		if(StringUtil.isNotBlank(doctorOpenid)) {
+			DoctorResponse doctor = doctorService.findByOpenid(doctorOpenid);
+			ValidateUtil.notNull(doctor, "不存在医生信息");
+			
+			request.setArea(doctor.getArea());
+			request.setDepartmentId(doctor.getDepartmentId());
+			request.setDoctorTitle(doctor.getTitle());
+			request.setStartTime(doctor.getStartTime());
+			request.setEndTime(doctor.getEndTime());
+		}
 		
 		return request;
+	}
+
+	@Override
+	public ReleaseListResponse findReleaseById(Integer releaseId) {
+		
+		ValidateUtil.notNull(releaseId, "id不能为空");
+		ReleaseListResponse response =  hospitalReleaseMapper.findById(releaseId);
+		response.setTag(JSON.parse(response.getTag().toString()));
+		return response;
 	}
 }

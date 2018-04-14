@@ -28,8 +28,8 @@
   </sql>
   
   <insert id="bindPhone" parameterType="com.phicomm.doctor.dataaccess.domain.Hospital">
-  	insert into hospital(openid, phone, create_time, update_time)
-  	values(#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, now(), now())
+  	insert into hospital(openid, phone, name, logo_img_url, create_time, update_time)
+  	values(#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{logoImgUrl,jdbcType=VARCHAR}, now(), now())
   </insert>
   
   <select id="getByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">

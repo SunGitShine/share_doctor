@@ -47,8 +47,8 @@
   </select>
   
   <insert id="insert" parameterType="com.phicomm.doctor.dataaccess.domain.Doctor">
-    insert into doctor (openid, phone, create_time, update_time)
-    values (#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, now(), now())
+    insert into doctor (openid, phone, `name`, head_img_url, create_time, update_time)
+    values (#{openid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}, now(), now())
   </insert>
   
   <update id="updateBySelective" parameterType="com.phicomm.doctor.dataaccess.domain.Doctor">

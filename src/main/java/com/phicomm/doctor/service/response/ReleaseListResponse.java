@@ -6,6 +6,8 @@ public class ReleaseListResponse {
 
 	private Integer id;
 	
+	private String openid;
+	
 	private String title;//标题
 	
 	private String hospitalName;//医院名称
@@ -25,6 +27,14 @@ public class ReleaseListResponse {
 	private Integer moneyType;//金额
 	
 	private Integer auditStatus;//审核状态
+	
+	private Integer education;//学历，1：大专，2：本科，3：硕士，4：博士，5：其他
+	
+	private Object tag;//医院标签
+	
+	private String jobDescription;//职位描述
+	
+	private String jobRequire;//职位要求
 
 	public Integer getId() {
 		return id;
@@ -112,5 +122,45 @@ public class ReleaseListResponse {
 
 	public void setAuditStatus(Integer auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+
+	public Integer getEducation() {
+		return education;
+	}
+
+	public void setEducation(Integer education) {
+		this.education = education;
+	}
+
+	public Object getTag() {
+		return tag;
+	}
+
+	public void setTag(Object tag) {
+		this.tag = tag;
+	}
+
+	public String getJobDescription() {
+		return jobDescription;
+	}
+
+	public void setJobDescription(String jobDescription) {
+		this.jobDescription = jobDescription;
+	}
+
+	public String getJobRequire() {
+		return jobRequire;
+	}
+
+	public void setJobRequire(String jobRequire) {
+		this.jobRequire = jobRequire;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 }

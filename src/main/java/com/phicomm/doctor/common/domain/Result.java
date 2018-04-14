@@ -177,7 +177,9 @@ public class Result implements Serializable {
 			// false)不循环
 //		SerializerFeature.WriteDateUseDateFormat,// 默认使用系统默认 格式日期格式化
 		 SerializerFeature.WriteMapNullValue, //输出空置字段
-		// SerializerFeature.WriteNullListAsEmpty,//list字段如果为null，输出为[]，而不是null
+		 SerializerFeature.WriteNullStringAsEmpty,//字符类型字段如果为null,输出为"",而非null
+		 SerializerFeature.WriteNullListAsEmpty,//list字段如果为null，输出为[]，而不是null
+//		 SerializerFeature.DisableCheckSpecialChar,//一个对象的字符串属性中如果有特殊字符如双引号，将会在转成json时带有反斜杠转移符。如果不需要转义，可以使用这个属性。默认为false 
 		// SerializerFeature.WriteNullNumberAsZero,//
 		// 数值字段如果为null，输出为0，而不是null
 		// SerializerFeature.WriteNullBooleanAsFalse,//Boolean字段如果为null，输出为false，而不是null

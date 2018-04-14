@@ -81,13 +81,16 @@ public class CommonController {
 		String phone = ParameterUtil.getString("phone");
 		String smsCode = ParameterUtil.getString("smsCode");
 		String openid = ParameterUtil.getString("openid");
+		String name = ParameterUtil.getString("name");
+		String headImgUrl = ParameterUtil.getString("headImgUrl");
 		Integer identityType = ParameterUtil.getInteger("identityType");
-		if(StringUtil.isEmpty(phone) || StringUtil.isEmpty(smsCode) || StringUtil.isEmpty(openid)) {
+		if(StringUtil.isEmpty(phone) || StringUtil.isEmpty(smsCode) || StringUtil.isEmpty(openid)
+				|| StringUtil.isEmpty(name) || StringUtil.isEmpty(headImgUrl)) {
 			throw new BusinessException("参数异常");
 		}
 		ValidateUtil.notNull(identityType, "身份类型不能为空");
 		
-		commonService.checkSmsCode(phone, smsCode, request.getSession());//校验短信验证码
+//		commonService.checkSmsCode(phone, smsCode, request.getSession());//校验短信验证码
 		
 		DoctorResponse doctor = doctorService.findByOpenid(openid);
 		HospitalResponse hospital = hospitalService.getByOpenid(openid);
@@ -96,9 +99,9 @@ public class CommonController {
 		ValidateUtil.isNotTrue(hospital != null, "该账户已存在医院库");
 		
 		if(identityType == 1) {
-			doctorService.bindPhone(phone, smsCode, openid, request.getSession());
+			doctorService.bindPhone(phone, openid, name, headImgUrl);
 		}else if(identityType == 2) {
-			hospitalService.bindPhone(phone, openid);
+			hospitalService.bindPhone(phone, openid, name, headImgUrl);
 		}
 		
 		return ParameterUtil.commonSuccessResult();
