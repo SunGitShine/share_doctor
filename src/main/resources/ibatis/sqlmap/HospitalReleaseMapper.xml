@@ -81,7 +81,7 @@
 		AND hr.status = 1
 	</if>
 	<if test="departmentId != null">
-		AND hr.department_id = #{request.departmentId}
+		AND hr.department_id = #{departmentId}
 		AND hr.audit_status = 1
 		AND hr.status = 1
 	</if>
@@ -120,7 +120,7 @@
 		AND hr.status = 1
 	</if>
 	<if test="departmentId != null">
-		AND hr.department_id = #{request.departmentId}
+		AND hr.department_id = #{departmentId}
 		AND hr.audit_status = 1
 		AND hr.status = 1
 	</if>
