@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phicomm.doctor.dataaccess.dao.PositionMapper">
+  <resultMap id="BaseResultMap" type="com.phicomm.doctor.dataaccess.domain.Position">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="doctor_title" jdbcType="INTEGER" property="doctorTitle" />
+    <result column="education" jdbcType="INTEGER" property="education" />
+    <result column="work_time" jdbcType="INTEGER" property="workTime" />
+    <result column="money_type" jdbcType="INTEGER" property="moneyType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="job_description" jdbcType="LONGVARCHAR" property="jobDescription" />
+    <result column="job_require" jdbcType="LONGVARCHAR" property="jobRequire" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, department_id, department_name, `title`, province, city, doctor_title, area, education, work_time,  
+    money_type, `status`, create_time, update_time, job_description, job_require
+  </sql>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from position
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.phicomm.doctor.dataaccess.domain.Position">
+    insert into position (department_id, 
+      department_name, title, province, city, area, doctor_title, education, 
+      work_time, time, money_type, create_time, update_time, job_description, job_require)
+    values (#{departmentId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER}, 
+      #{doctorTitle,jdbcType=INTEGER}, #{education,jdbcType=INTEGER}, 
+      #{workTime,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{moneyType,jdbcType=INTEGER}, now(), now(), 
+      #{jobDescription,jdbcType=LONGVARCHAR}, #{jobRequire,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <update id="updateStatus">
+  	update position
+  	<set>
+  		<if test="status != null">`status` = #{status,jdbcType=INTEGER},</if>
+  		update_time = now()
+  	</set>
+  	where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findByPage" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"/>
+	FROM position
+	WHERE status = 1
+	order by hr.create_time desc
+    <if test="pageQuery != null">
+      limit #{pageQuery.start} , #{pageQuery.pageSize} 
+    </if>
+  </select>
+  
+  <select id="findCount" resultType="java.lang.Integer">
+  	SELECT COUNT(1)
+	FROM position
+	WHERE status = 1
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"/> 
+  	FROM position
+	WHERE 
+	id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
