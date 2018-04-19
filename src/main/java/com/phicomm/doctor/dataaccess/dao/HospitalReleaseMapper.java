@@ -23,4 +23,6 @@ public interface HospitalReleaseMapper {
 	Integer findReleaseCount(@Param("request")ReleaseListRequest request, @Param("departmentId")Integer departmentId);
 	
 	ReleaseListResponse findById(@Param("releaseId")Integer releaseId);
+	
+	List<HospitalRelease> findListByHid(@Param("hospitalId")Integer hospitalId);
 }

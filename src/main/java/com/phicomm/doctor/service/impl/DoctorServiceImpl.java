@@ -1,5 +1,6 @@
 package com.phicomm.doctor.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -11,9 +12,16 @@ import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.dao.DoctorMapper;
 import com.phicomm.doctor.dataaccess.dao.DoctorReleseMapper;
+import com.phicomm.doctor.dataaccess.dao.HospitalMapper;
+import com.phicomm.doctor.dataaccess.dao.HospitalReleaseMapper;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
+import com.phicomm.doctor.dataaccess.domain.Hospital;
+import com.phicomm.doctor.dataaccess.domain.HospitalRelease;
 import com.phicomm.doctor.service.DoctorService;
+import com.phicomm.doctor.service.request.DoctorListRequest;
+import com.phicomm.doctor.service.response.DoctorListResponse;
+import com.phicomm.doctor.service.response.DoctorListResponsePage;
 import com.phicomm.doctor.service.response.DoctorResponse;
 import com.phicomm.doctor.util.ChainAreaUtil;
 import com.phicomm.doctor.util.StringUtil;
@@ -27,6 +35,12 @@ public class DoctorServiceImpl implements DoctorService{
 	
 	@Autowired
 	private DoctorReleseMapper doctorReleseMapper;
+	
+	@Autowired
+	private HospitalMapper hospitalMapper;
+	
+	@Autowired
+	private HospitalReleaseMapper hospitalReleaseMapper;
 	
 	@Override
 	public void bindPhone(String phone, String openid, String name, String headImgUrl) {
@@ -82,18 +96,6 @@ public class DoctorServiceImpl implements DoctorService{
 		return response;
 	}
 
-	@Override
-	public Integer totalCount(Integer departmentId, Integer hospitalId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<DoctorResponse> findByPage(Integer departmentId,
-			Integer hospitalId, PageQuery pageQuery) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void relese(String openid, DoctorRelese doctorRelese) {
@@ -121,5 +123,49 @@ public class DoctorServiceImpl implements DoctorService{
 	public void deleteRelese(Integer doctorReleseId) {
 		
 		doctorReleseMapper.delete(doctorReleseId);
-	}		
+	}
+
+	@Override
+	public DoctorListResponsePage findDoctorListPage(String hospitalOpenid, Integer departmentId,
+			PageQuery pageQuery) {
+		
+		DoctorListResponsePage responsePage = new DoctorListResponsePage();
+		List<DoctorListResponse> doctorListResponses = new ArrayList<DoctorListResponse>();
+		Integer count = 0;
+		
+		if(StringUtil.isNotBlank(hospitalOpenid)) {
+			
+			List<DoctorListRequest> requestList = new ArrayList<DoctorListRequest>();
+			Hospital hospital = hospitalMapper.getByOpenid(hospitalOpenid);
+			
+			if(hospital != null) {
+				
+				List<HospitalRelease> hrs = hospitalReleaseMapper.findListByHid(hospital.getId());
+				for(HospitalRelease release : hrs) {
+					
+					DoctorListRequest request = new DoctorListRequest();
+					request.setArea(hospital.getArea());
+					request.setDepartmentId(release.getDepartmentId());
+					request.setDoctorTitle(release.getDoctorTitle());
+					request.setTime(release.getTime());
+					request.setWorkTime(release.getWorkTime());
+					
+					requestList.add(request);
+				}
+				
+				doctorListResponses = doctorMapper.findByPage(requestList, null, pageQuery);
+				count = doctorMapper.findCount(requestList, null);
+			}
+		}
+		
+		if(departmentId != null) {
+			doctorListResponses = doctorMapper.findByPage(null, departmentId, pageQuery);
+			count = doctorMapper.findCount(null, departmentId);
+		}
+		
+		responsePage.setCount(count);
+		responsePage.setResponses(doctorListResponses);
+		return responsePage;
+	}
+
 }

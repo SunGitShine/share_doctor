@@ -131,49 +131,50 @@
   </update>
   
   <select id="findByPage" resultType="com.phicomm.doctor.service.response.DoctorListResponse">
-  	SELECT d.openid,d.name,d.head_img_url,d.work_time,d.department_name
-  	d.title,d.call,dr.start_time,dr.end_time,dr.status
+  	SELECT d.openid,d.name,d.head_img_url AS headImgUrl,d.work_time AS workTime,
+  	d.department_name AS departmentName, d.title AS doctorTitle,d.call,dr.start_time AS startTime,
+  	dr.end_time AS endTime,dr.status
   	FROM doctor d 
   	LEFT JOIN doctor_relese dr 
   	ON d.id = dr.doctor_id 
-  	WHERE 1=1
-  	<if test="doctorOpenid != null AND doctorOpenid != ''">
-  		AND d.openid = #{doctorOpenid}
-  	</if>
-  	<if test="doctorOpenid == null or doctorOpenid == ''">
-  		<if test="request.departmentId != null">
+  	WHERE d.audit_status = 1
+  	<if test="departmentId == null">
+  		<if test="requestList != null">
   			AND d.department_id IN 
 	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
 				#{request.departmentId}
 			</foreach>
-		</if>
 		
-		<if test="request.area != null">
   			AND d.area IN 
 	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
 				#{request.area}
 			</foreach>
-		</if>
 		
-		<if test="request.workTime != null">
+		<!-- <if test="request.workTime != null">
   			AND d.work_time IN 
 	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
-				#{request.area}
+				#{request.workTime}
 			</foreach>
-		</if>
+		</if> -->
 		
-		<if test="request.time != null">
 			AND 
 			<foreach collection="requestList" item="request" open="(" close=")" separator="or">
-				(DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(request.time, interval 5 day)),'%Y-%m-%d')
+				((DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
 				AND
-				DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(request.time, interval 5 day)),'%Y-%m-%d'))
+				DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
+				OR
+				((DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
+				AND
+				DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
+				OR
+				((DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
+				AND
+				DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
 			</foreach>
 		</if>
   	</if>
   	<if test="departmentId != null">
 		AND d.department_id = #{departmentId}
-		AND d.status = 1
 	</if>
 	
 	order by dr.create_time desc
@@ -187,43 +188,44 @@
   	SELECT COUNT(1) FROM doctor d 
   	LEFT JOIN doctor_relese dr 
   	ON d.id = dr.doctor_id 
-  	WHERE 1=1
-  	<if test="doctorOpenid != null AND doctorOpenid != ''">
-  		AND d.openid = #{doctorOpenid}
-  	</if>
-  	<if test="doctorOpenid == null or doctorOpenid == ''">
-  		<if test="request.departmentId != null">
+  	WHERE d.audit_status = 1
+  	<if test="departmentId == null">
+  		<if test="requestList != null">
   			AND d.department_id IN 
 	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
 				#{request.departmentId}
 			</foreach>
-		</if>
 		
-		<if test="request.area != null">
   			AND d.area IN 
 	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
 				#{request.area}
 			</foreach>
-		</if>
 		
-		<if test="request.workTime != null">
+		<!-- <if test="request.workTime != null">
+  			AND d.work_time IN 
+	  		<foreach collection="requestList" item="request" open="(" close=")" separator=",">
+				#{request.workTime}
+			</foreach>
+		</if> -->
+		
 			AND 
 			<foreach collection="requestList" item="request" open="(" close=")" separator="or">
-				(DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(request.time, interval 5 day)),'%Y-%m-%d')
+				((DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
 				AND
-				DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(request.time, interval 5 day)),'%Y-%m-%d'))
+				DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
+				OR
+				((DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
+				AND
+				DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
+				OR
+				((DATE_FORMAT(dr.start_time,'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT((date_sub(#{request.time}, interval 5 day)),'%Y-%m-%d')
+				AND
+				DATE_FORMAT(dr.end_time,'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT((date_add(#{request.time}, interval 5 day)),'%Y-%m-%d')))
 			</foreach>
 		</if>
   	</if>
   	<if test="departmentId != null">
 		AND d.department_id = #{departmentId}
-		AND d.status = 1
 	</if>
-	
-	order by dr.create_time desc
-
-    <if test="pageQuery != null">
-      limit #{pageQuery.start} , #{pageQuery.pageSize} 
-    </if>
   </select>
 </mapper>

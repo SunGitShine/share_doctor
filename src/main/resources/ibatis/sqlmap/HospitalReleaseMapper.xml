@@ -52,14 +52,14 @@
   </update>
   
   <select id="findReleaseListPage" resultType="com.phicomm.doctor.service.response.ReleaseListResponse">
-  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.scale,
+  	SELECT h.`name` AS hospitalName,h.logo_img_url AS logoImgUrl,h.scale,
   	hr.id,hr.title,hr.department_name AS departmentName,
 	hr.doctor_title AS doctorTitle,hr.work_time AS workTime,hr.time,hr.money_type AS moneyType,
 	hr.audit_status AS auditStatus,hr.create_time AS createTime
 	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
 	WHERE 1=1
 	<if test="request.hospitalOpenid != null and request.hospitalOpenid != ''">
-		AND h.openid = #{request.hospitalOpenId}
+		AND h.openid = #{request.hospitalOpenid}
 	</if>
 	<if test="request.hospitalOpenid == null or request.hospitalOpenid == ''">
 		<if test="request.area != null">
@@ -98,7 +98,7 @@
 	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
 	WHERE 1=1
 	<if test="request.hospitalOpenid != null and request.hospitalOpenid != ''">
-		AND h.openid = #{request.hospitalOpenId}
+		AND h.openid = #{request.hospitalOpenid}
 	</if>
 	<if test="request.hospitalOpenid == null or request.hospitalOpenid == ''">
 		<if test="request.area != null">
@@ -127,7 +127,7 @@
   </select>
   
   <select id="findById" resultType="com.phicomm.doctor.service.response.ReleaseListResponse">
-  	SELECT h.`name`,h.logo_img_url AS logoImgUrl,h.tag,h.openid,
+  	SELECT h.`name` AS hospitalName,h.logo_img_url AS logoImgUrl,h.tag,h.openid,
   	hr.id,hr.title,hr.department_name AS departmentName,
 	hr.doctor_title AS doctorTitle,hr.work_time AS workTime,hr.time,hr.money_type AS moneyType,
 	hr.audit_status AS auditStatus,hr.create_time AS createTime,hr.education,
@@ -137,5 +137,11 @@
 	hr.audit_status = 1
 	AND hr.status = 1
 	AND hr.id = #{releaseId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findListByHid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"/> FROM hospital_release
+  	WHERE audit_status = 1 AND status = 1
+  	AND hospital_id = #{hospitalId}
   </select>
 </mapper>

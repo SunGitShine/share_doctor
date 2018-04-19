@@ -2,6 +2,8 @@ package com.phicomm.doctor.service.response;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSON;
+
 public class DoctorListResponse {
 
 	private String openid;
@@ -66,6 +68,6 @@ public class DoctorListResponse {
 		return call;
 	}
 	public void setCall(Object call) {
-		this.call = call;
+		this.call = JSON.parse(call.toString());
 	}
 }

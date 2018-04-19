@@ -1,20 +1,25 @@
 package com.phicomm.doctor.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.common.domain.Result;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
 import com.phicomm.doctor.service.DoctorService;
+import com.phicomm.doctor.service.response.DoctorListResponse;
+import com.phicomm.doctor.service.response.DoctorListResponsePage;
 import com.phicomm.doctor.service.response.DoctorResponse;
 import com.phicomm.doctor.util.ParameterUtil;
 import com.phicomm.doctor.util.ValidateUtil;
 
 @Controller
 @RequestMapping("/doctor")
-public class DoctorController {
+public class DoctorController extends BaseController{
 	
 	@Autowired
 	private DoctorService doctorService;
@@ -39,9 +44,12 @@ public class DoctorController {
 	public Result findDoctorListPage(){
 		
 		String hospitalOpenid = ParameterUtil.getString("hospitalOpenid");
-		String doctorOpenid = ParameterUtil.getString("doctorOpenid");
 		Integer departmentId = ParameterUtil.getInteger("departmentId");
-		return null;
+		PageQuery pageQuery = getPageQuery();
+		
+		DoctorListResponsePage responses = doctorService.findDoctorListPage(hospitalOpenid, departmentId, pageQuery);
+		
+		return ParameterUtil.pageSuccessResult(responses.getCount(), responses.getResponses());
 	}
 	
 	@RequestMapping("/relese")

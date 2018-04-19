@@ -1,10 +1,9 @@
 package com.phicomm.doctor.service;
 
-import java.util.List;
-
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
+import com.phicomm.doctor.service.response.DoctorListResponsePage;
 import com.phicomm.doctor.service.response.DoctorResponse;
 
 public interface DoctorService {
@@ -15,13 +14,12 @@ public interface DoctorService {
 	
 	DoctorResponse findByOpenid(String openid);
 	
-	Integer totalCount(Integer departmentId, Integer hospitalId);
-	
-	List<DoctorResponse> findByPage(Integer departmentId, Integer hospitalId, PageQuery pageQuery);
-	
 	void relese(String openid, DoctorRelese doctorRelese);
 	
 	void updateReleseStatus(Integer doctorReleseId, Integer status);
 	
 	void deleteRelese(Integer doctorReleseId);
+	
+	DoctorListResponsePage findDoctorListPage(String hospitalOpenid, Integer departmentId, PageQuery pageQuery);
+	
 }
