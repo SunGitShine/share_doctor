@@ -23,4 +23,11 @@ public interface DoctorMapper {
 	
 	Integer findCount(@Param("requestList")List<DoctorListRequest> requestList,
 			@Param("departmentId")Integer departmentId);
+	
+	List<Doctor> findByPageWeb(@Param("name")String name, 
+			@Param("auditStatus") Integer auditStatus, 
+			@Param("pageQuery")PageQuery pageQuery);
+	
+	Integer findCountWeb(@Param("name")String name, 
+			@Param("auditStatus") Integer auditStatus);
 }

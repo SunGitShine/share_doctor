@@ -28,6 +28,8 @@ public class ReleaseListResponse {
 	
 	private Integer auditStatus;//审核状态
 	
+	private Integer status;//状态，0：下架，1：上架
+	
 	private Integer education;//学历，1：大专，2：本科，3：硕士，4：博士，5：其他
 	
 	private Object tag;//医院标签
@@ -162,5 +164,13 @@ public class ReleaseListResponse {
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

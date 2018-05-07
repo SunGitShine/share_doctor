@@ -141,20 +141,22 @@ public class DoctorServiceImpl implements DoctorService{
 			if(hospital != null) {
 				
 				List<HospitalRelease> hrs = hospitalReleaseMapper.findListByHid(hospital.getId());
-				for(HospitalRelease release : hrs) {
+				if(hrs.size() > 0) {
+					for(HospitalRelease release : hrs) {
+						
+						DoctorListRequest request = new DoctorListRequest();
+						request.setArea(hospital.getArea());
+						request.setDepartmentId(release.getDepartmentId());
+						request.setDoctorTitle(release.getDoctorTitle());
+						request.setTime(release.getTime());
+						request.setWorkTime(release.getWorkTime());
+						
+						requestList.add(request);
+					}
 					
-					DoctorListRequest request = new DoctorListRequest();
-					request.setArea(hospital.getArea());
-					request.setDepartmentId(release.getDepartmentId());
-					request.setDoctorTitle(release.getDoctorTitle());
-					request.setTime(release.getTime());
-					request.setWorkTime(release.getWorkTime());
-					
-					requestList.add(request);
+					doctorListResponses = doctorMapper.findByPage(requestList, null, pageQuery);
+					count = doctorMapper.findCount(requestList, null);
 				}
-				
-				doctorListResponses = doctorMapper.findByPage(requestList, null, pageQuery);
-				count = doctorMapper.findCount(requestList, null);
 			}
 		}
 		
@@ -166,6 +168,26 @@ public class DoctorServiceImpl implements DoctorService{
 		responsePage.setCount(count);
 		responsePage.setResponses(doctorListResponses);
 		return responsePage;
+	}
+
+	@Override
+	public List<Doctor> findByPageWeb(String name, Integer auditStatus, PageQuery pageQuery) {
+		
+		return doctorMapper.findByPageWeb(name, auditStatus, pageQuery);
+	}
+
+	@Override
+	public Integer findCountWeb(String name, Integer auditStatus) {
+		return doctorMapper.findCountWeb(name, auditStatus);
+	}
+
+	@Override
+	public void audit(String openid, Integer auditStatus) {
+		
+		Doctor doctor = new Doctor();
+		doctor.setOpenid(openid);
+		doctor.setAuditStatus(auditStatus);
+		doctorMapper.updateBySelective(doctor);
 	}
 
 }

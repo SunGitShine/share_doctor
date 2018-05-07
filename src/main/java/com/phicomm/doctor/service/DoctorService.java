@@ -1,5 +1,7 @@
 package com.phicomm.doctor.service;
 
+import java.util.List;
+
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
 import com.phicomm.doctor.dataaccess.domain.DoctorRelese;
@@ -22,4 +24,9 @@ public interface DoctorService {
 	
 	DoctorListResponsePage findDoctorListPage(String hospitalOpenid, Integer departmentId, PageQuery pageQuery);
 	
+	List<Doctor> findByPageWeb(String name, Integer auditStatus, PageQuery pageQuery);
+	
+	Integer findCountWeb(String name, Integer auditStatus);
+	
+	void audit(String openid, Integer auditStatus);
 }

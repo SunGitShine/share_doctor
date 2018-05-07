@@ -1,5 +1,6 @@
 package com.phicomm.doctor.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -83,6 +84,11 @@ public class HospitalServiceImpl implements HospitalService{
 	public void updateReleaseStatus(Integer releaseId, Integer status, Integer auditStatus) {
 		hospitalReleaseMapper.updateStatus(releaseId, status, null);
 	}
+	
+	@Override
+	public void updateReleaseAuditStatus(Integer releaseId, Integer status, Integer auditStatus) {
+		hospitalReleaseMapper.updateStatus(releaseId, null, auditStatus);
+	}
 
 	@Override
 	public void deleteRelease(Integer releaseId) {
@@ -104,11 +110,28 @@ public class HospitalServiceImpl implements HospitalService{
 	@Override
 	public List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenId, Integer departmentId, PageQuery pageQuery) {
 		
+		if(StringUtil.isNotBlank(doctorOpenId)) {
+			DoctorResponse doctor = doctorService.findByOpenid(doctorOpenId);
+			if(doctor.getCompleteStatus() != 1 || doctor.getAuditStatus() != 1
+					|| doctor.getDoctorReleseId() == null) {
+				return new ArrayList<ReleaseListResponse>();
+			}
+		}
+		
 		return hospitalReleaseMapper.findReleaseListPage(makeRequestParm(hospitalOpenid, doctorOpenId), departmentId, pageQuery);
 	}
 
 	@Override
 	public Integer findReleaseCount(String hospitalOpenid, String doctorOpenid, Integer departmentId) {
+		
+		if(StringUtil.isNotBlank(doctorOpenid)) {
+			DoctorResponse doctor = doctorService.findByOpenid(doctorOpenid);
+			if(doctor.getCompleteStatus() != 1 || doctor.getAuditStatus() != 1
+					|| doctor.getDoctorReleseId() == null) {
+				return 0;
+			}
+		}
+		
 		
 		return hospitalReleaseMapper.findReleaseCount(makeRequestParm(hospitalOpenid, doctorOpenid), departmentId);
 	}	
@@ -137,7 +160,33 @@ public class HospitalServiceImpl implements HospitalService{
 		
 		ValidateUtil.notNull(releaseId, "id不能为空");
 		ReleaseListResponse response =  hospitalReleaseMapper.findById(releaseId);
-		response.setTag(JSON.parse(response.getTag().toString()));
+		if(response != null) {
+			response.setTag(JSON.parse(response.getTag().toString()));
+		}
 		return response;
 	}
+
+	@Override
+	public List<Hospital> findByPageWeb(String name, Integer auditStatus, PageQuery pageQuery) {
+		return hospitalMapper.findByPageWeb(name, auditStatus, pageQuery);
+	}
+
+	@Override
+	public Integer findByCountWeb(String name, Integer auditStatus) {
+		return hospitalMapper.findByCountWeb(name, auditStatus);
+	}
+
+	@Override
+	public void auditHospital(Integer auditStatus, String openid) {
+		hospitalMapper.audit(auditStatus, openid);
+	}
+
+	@Override
+	public List<ReleaseListResponse> findReleaseListPageWeb(String name, Integer auditStatus, PageQuery pageQuery) {
+		return hospitalReleaseMapper.findReleaseListPageWeb(name, auditStatus, pageQuery);
+	}
+
+	@Override
+	public Integer findReleaseListCountWeb(String name, Integer auditStatus) {
+		return hospitalReleaseMapper.findReleaseListCountWeb(name, auditStatus);	}
 }

@@ -59,6 +59,37 @@
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
   
+  <select id="findByPageWeb" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from hospital
+  	where 1=1
+  	<if test="name != null and name != ''">
+  		and `name` like concat('%', #{name}, '%')
+  	</if>
+  	<if test="auditStatus != null">
+  		and audit_status = #{auditStatus}
+  	</if>
+  	order by create_time desc
+  	<if test="pageQuery != null">
+      limit #{pageQuery.start} , #{pageQuery.pageSize} 
+    </if>
+  </select>
+  
+  <select id="findByCountWeb" resultType="java.lang.Integer">
+  	select count(1) from hospital
+  	where 1=1
+  	<if test="name != null and name != ''">
+  		and `name` like concat('%', #{name}, '%')
+  	</if>
+  	<if test="auditStatus != null">
+  		and audit_status = #{auditStatus}
+  	</if>
+  </select>
+  
+  <update id="audit">
+  	update hospital set audit_status = #{auditStatus}
+  	where openid = #{openid}
+  </update>
+  
   <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hospital
     where id = #{id,jdbcType=INTEGER}

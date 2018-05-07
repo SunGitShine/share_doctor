@@ -2,6 +2,8 @@ package com.phicomm.doctor.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.dataaccess.domain.Hospital;
 import com.phicomm.doctor.dataaccess.domain.HospitalRelease;
@@ -20,6 +22,8 @@ public interface HospitalService {
 	
 	void updateReleaseStatus(Integer releaseId, Integer status, Integer auditStatus);
 	
+	void updateReleaseAuditStatus(Integer releaseId, Integer status, Integer auditStatus);
+	
 	void deleteRelease(Integer releaseId);
 	
 	List<ReleaseListResponse> findReleaseListPage(String hospitalOpenid, String doctorOpenid, Integer departmentId, PageQuery pageQuery);
@@ -27,4 +31,14 @@ public interface HospitalService {
 	Integer findReleaseCount(String hospitalOpenid, String doctorOpenid, Integer departmentId);
 	
 	ReleaseListResponse findReleaseById(Integer releaseId);
+	
+	List<Hospital> findByPageWeb(String name, Integer auditStatus, PageQuery pageQuery);
+	
+	Integer findByCountWeb(String name, Integer auditStatus);
+	
+	void auditHospital(Integer auditStatus, String openid);
+	
+	List<ReleaseListResponse> findReleaseListPageWeb(String name, Integer auditStatus, PageQuery pageQuery);
+	
+	Integer findReleaseListCountWeb(String name, Integer auditStatus);
 }

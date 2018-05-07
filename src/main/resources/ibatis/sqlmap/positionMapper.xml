@@ -54,7 +54,7 @@
   	SELECT <include refid="Base_Column_List"/>
 	FROM position
 	WHERE status = 1
-	order by hr.create_time desc
+	order by create_time desc
     <if test="pageQuery != null">
       limit #{pageQuery.start} , #{pageQuery.pageSize} 
     </if>

@@ -130,6 +130,32 @@
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
   
+  <select id="findByPageWeb" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from doctor
+  	where 1=1
+  	<if test="name != '' and name != null">
+  		and `name` like contcat('%',#{name},'%')
+  	</if>
+  	<if test="auditStatus != null">
+  		and audit_status = #{auditStatus}
+  	</if>
+  	order by create_time desc
+  	<if test="pageQuery != null">
+      limit #{pageQuery.start} , #{pageQuery.pageSize} 
+    </if>
+  </select>
+  
+  <select id="findCountWeb" resultType="java.lang.Integer">
+  	select count(1) from doctor
+  	where 1=1
+  	<if test="name != '' and name != null">
+  		and `name` like contcat('%',#{name},'%')
+  	</if>
+  	<if test="auditStatus != null">
+  		and audit_status = #{auditStatus}
+  	</if>
+  </select>
+  
   <select id="findByPage" resultType="com.phicomm.doctor.service.response.DoctorListResponse">
   	SELECT d.openid,d.name,d.head_img_url AS headImgUrl,d.work_time AS workTime,
   	d.department_name AS departmentName, d.title AS doctorTitle,d.call,dr.start_time AS startTime,
@@ -175,6 +201,7 @@
   	</if>
   	<if test="departmentId != null">
 		AND d.department_id = #{departmentId}
+		AND dr.id IS NOT NULL
 	</if>
 	
 	order by dr.create_time desc

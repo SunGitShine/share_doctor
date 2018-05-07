@@ -7,6 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.phicomm.doctor.common.domain.PageQuery;
+import com.phicomm.doctor.util.ParameterUtil;
 
 
 public class BaseController {
@@ -22,8 +23,8 @@ public class BaseController {
 	}
 	
 	protected PageQuery getPageQuery() {
-		Integer pageNo = getIntegerParameter("pageNo", 1);
-		Integer pageSize = getIntegerParameter("pageSize", 20);
+		Integer pageNo = ParameterUtil.getInteger("pageNo", 1);
+		Integer pageSize = ParameterUtil.getInteger("pageSize", 10);
 		PageQuery page = new PageQuery(pageNo, pageSize);
 
 		return page;

@@ -82,6 +82,23 @@ public final class ParameterUtil {
         }
         return object.getInteger(parameterKey);
     }
+    
+    public static Integer getInteger(String parameterKey, Integer defaultNum) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String value = request.getParameter("d");
+        if(StringUtils.isEmpty(value)){
+        	throw new BusinessException("参数不能为空");
+        }
+
+        JSONObject object = JSON.parseObject(value);
+        if (null == object) {
+            return null;
+        }
+        if(object.getInteger(parameterKey) == null) {
+        	return defaultNum;
+        }
+        return object.getInteger(parameterKey);
+    }
 
     public static Byte getByte(String parameterKey) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

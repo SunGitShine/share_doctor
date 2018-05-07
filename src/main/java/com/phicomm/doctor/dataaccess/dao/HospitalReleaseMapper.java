@@ -25,4 +25,11 @@ public interface HospitalReleaseMapper {
 	ReleaseListResponse findById(@Param("releaseId")Integer releaseId);
 	
 	List<HospitalRelease> findListByHid(@Param("hospitalId")Integer hospitalId);
+	
+	List<ReleaseListResponse> findReleaseListPageWeb(@Param("name")String name,
+			@Param("auditStatus")Integer auditStatus,
+			@Param("pageQuery")PageQuery pageQuery);
+	
+	Integer findReleaseListCountWeb(@Param("name")String name,
+			@Param("auditStatus")Integer auditStatus);
 }
