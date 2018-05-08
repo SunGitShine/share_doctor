@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context
@@ -16,25 +16,28 @@
 		http://www.springframework.org/schema/aop   
         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
 		http://www.springframework.org/schema/cache 
-    	http://www.springframework.org/schema/cache/spring-cache.xsd"> 
-  
-    <context:component-scan base-package="com.phicomm.doctor.*" />
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-   <mvc:annotation-driven>
-        <mvc:return-value-handlers>
-           <!--  添加统一返回值的处理器 -->
-            <bean class="com.phicomm.doctor.common.domain.CommonMethodReturnValueHandler"/>
-        </mvc:return-value-handlers>
-    </mvc:annotation-driven>
+    	http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <!-- 添加统一异常处理器 -->
-    <bean class="com.phicomm.doctor.common.domain.CommonExceptionHandler">
-    </bean>
-    
-   	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-   	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-    
-    <!-- spring的属性加载器，加载properties文件中的属性 -->
+	<context:component-scan base-package="com.phicomm.doctor.*" />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<mvc:annotation-driven>
+		<mvc:return-value-handlers>
+			<!-- 添加统一返回值的处理器 -->
+			<bean
+				class="com.phicomm.doctor.common.domain.CommonMethodReturnValueHandler" />
+		</mvc:return-value-handlers>
+	</mvc:annotation-driven>
+
+	<!-- 添加统一异常处理器 -->
+	<bean class="com.phicomm.doctor.common.domain.CommonExceptionHandler">
+	</bean>
+
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<!-- spring的属性加载器，加载properties文件中的属性 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
@@ -42,8 +45,8 @@
 		</property>
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
-    
-    <!-- 数据库公共连接 -->
+
+	<!-- 数据库公共连接 -->
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
 		destroy-method="close">
 		<property name="poolProperties">
@@ -71,12 +74,12 @@
 			</bean>
 		</property>
 	</bean>
-  
+
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-    <bean id="transactionManager"
+
+	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
@@ -88,25 +91,26 @@
 	</bean>
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
-    </bean>
-  	
-   <!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/" />  
-        <property name="suffix" value=".html" />  
-    </bean> -->
-    
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/" />  
-        <property name="suffix" value=".html" />  
-    </bean>
-    
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-    
-    <bean id="jsonXssObjectMapper"
-		class="com.fasterxml.jackson.databind.ObjectMapper" >
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/> 
+		<property name="prefix" value="/" /> <property name="suffix" value=".html" 
+		/> </bean> -->
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".html" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
+	<bean id="jsonXssObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
 		<property name="dateFormat">
 			<bean class="java.text.SimpleDateFormat">
 				<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
@@ -118,7 +122,7 @@
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="objectMapper" ref="jsonXssObjectMapper" />
 	</bean>
-	
+
 	<bean name="handlerAdapter"
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
@@ -128,49 +132,53 @@
 		</property>
 		<property name="order" value="0" />
 	</bean>
-	
+
 	<bean id="doctorMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DoctorMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.DoctorMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
+
 	<bean id="hospitalMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.HospitalMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.HospitalMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
+
 	<bean id="doctorReleseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DoctorReleseMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.DoctorReleseMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
+
 	<bean id="hospitalReleaseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.HospitalReleaseMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.HospitalReleaseMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
+
 	<bean id="departmentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.DepartmentMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.DepartmentMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
+
 	<bean id="positionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-	    <property name="mapperInterface" value="com.phicomm.doctor.dataaccess.dao.PositionMapper"></property>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface"
+			value="com.phicomm.doctor.dataaccess.dao.PositionMapper"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	
-	<mvc:interceptors>  
-        <!-- <mvc:interceptor>  
-            <mvc:mapping path="/**" />
-            <mvc:exclude-mapping path="/mobile/**"/>
-            <bean class="com.phicomm.doctor.interceptor.LoginInterceptor"/>  
-        </mvc:interceptor> -->
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.phicomm.doctor.interceptor.LogInterceptor">
-                <property name="openLog" value="true" />
-            </bean>
-        </mvc:interceptor>
-    </mvc:interceptors>
-    
+
+	<mvc:interceptors>
+		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <mvc:exclude-mapping 
+			path="/mobile/**"/> <bean class="com.phicomm.doctor.interceptor.LoginInterceptor"/> 
+			</mvc:interceptor> -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.phicomm.doctor.interceptor.LogInterceptor">
+				<property name="openLog" value="true" />
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 </beans>
