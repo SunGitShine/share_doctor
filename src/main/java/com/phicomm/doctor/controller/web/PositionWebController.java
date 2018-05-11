@@ -31,9 +31,10 @@ public class PositionWebController extends BaseController{
 	@RequestMapping("/findByPage")
 	public Result findByPage() {
 		
+		Integer status = ParameterUtil.getInteger("status");
 		PageQuery pageQuery = getPageQuery();
-		List<Position> positions = positionService.findByPage(pageQuery);
-		Integer count = positionService.findCount();
+		List<Position> positions = positionService.findByPageWeb(status, pageQuery);
+		Integer count = positionService.findCountWeb(status);
 		return ParameterUtil.pageSuccessResult(count, positions);
 	}
 	
@@ -53,6 +54,14 @@ public class PositionWebController extends BaseController{
 		Integer status = ParameterUtil.getInteger("status");
 		positionService.updateStatus(status, positionId);
 		
+		return ParameterUtil.commonSuccessResult();
+	}
+	
+	@RequestMapping("/delete")
+	public Result delete() {
+		
+		Integer positionId = ParameterUtil.getInteger("positionId");
+		positionService.delete(positionId);
 		return ParameterUtil.commonSuccessResult();
 	}
 }

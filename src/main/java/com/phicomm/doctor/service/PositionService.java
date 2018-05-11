@@ -18,4 +18,10 @@ public interface PositionService {
 	List<Position> findByPage(PageQuery pageQuery);
 	
 	Integer findCount();
+	
+	List<Position> findByPageWeb(Integer status, PageQuery pageQuery);
+	
+	Integer findCountWeb(Integer status);
+	
+	void delete(Integer id);
 }

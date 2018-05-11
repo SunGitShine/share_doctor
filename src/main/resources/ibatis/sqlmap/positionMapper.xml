@@ -33,11 +33,11 @@
   <insert id="insert" parameterType="com.phicomm.doctor.dataaccess.domain.Position">
     insert into position (department_id, 
       department_name, title, province, city, area, doctor_title, education, 
-      work_time, time, money_type, create_time, update_time, job_description, job_require)
+      work_time, money_type, create_time, update_time, job_description, job_require)
     values (#{departmentId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=INTEGER}, 
       #{doctorTitle,jdbcType=INTEGER}, #{education,jdbcType=INTEGER}, 
-      #{workTime,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{moneyType,jdbcType=INTEGER}, now(), now(), 
+      #{workTime,jdbcType=INTEGER}, #{moneyType,jdbcType=INTEGER}, now(), now(), 
       #{jobDescription,jdbcType=LONGVARCHAR}, #{jobRequire,jdbcType=LONGVARCHAR})
   </insert>
   
@@ -66,10 +66,36 @@
 	WHERE status = 1
   </select>
   
+  <select id="findByPageWeb" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List"/>
+	FROM position
+	WHERE 1 = 1
+	<if test="status != null">
+		and `status`=#{status}
+	</if>
+	order by create_time desc
+    <if test="pageQuery != null">
+      limit #{pageQuery.start} , #{pageQuery.pageSize} 
+    </if>
+  </select>
+  
+  <select id="findCountWeb" resultType="java.lang.Integer">
+  	SELECT COUNT(1)
+	FROM position
+	WHERE 1 = 1
+	<if test="status != null">
+		and `status`=#{status}
+	</if>
+  </select>
+  
   <select id="findById" resultMap="BaseResultMap">
   	SELECT <include refid="Base_Column_List"/> 
   	FROM position
 	WHERE 
 	id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <delete id="delete">
+  	delete from position where id = #{id}
+  </delete>
 </mapper>

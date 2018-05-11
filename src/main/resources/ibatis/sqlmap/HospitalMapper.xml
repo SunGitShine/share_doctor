@@ -63,7 +63,7 @@
   	select <include refid="Base_Column_List"/> from hospital
   	where 1=1
   	<if test="name != null and name != ''">
-  		and `name` like concat('%', #{name}, '%')
+  		and `name` like CONCAT('%', #{name}, '%')
   	</if>
   	<if test="auditStatus != null">
   		and audit_status = #{auditStatus}
@@ -78,7 +78,7 @@
   	select count(1) from hospital
   	where 1=1
   	<if test="name != null and name != ''">
-  		and `name` like concat('%', #{name}, '%')
+  		and `name` like CONCAT('%', #{name}, '%')
   	</if>
   	<if test="auditStatus != null">
   		and audit_status = #{auditStatus}

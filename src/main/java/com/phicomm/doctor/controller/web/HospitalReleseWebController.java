@@ -39,7 +39,7 @@ public class HospitalReleseWebController extends BaseController{
 		Integer releaseId = ParameterUtil.getInteger("releaseId");
 		Integer auditStatus = ParameterUtil.getInteger("auditStatus");
 		
-		hospitalService.updateReleaseStatus(releaseId, null, auditStatus);
+		hospitalService.updateReleaseAuditStatus(releaseId, null, auditStatus);
 		return ParameterUtil.commonSuccessResult();
 	}
 	

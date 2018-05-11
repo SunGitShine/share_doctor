@@ -151,10 +151,10 @@
 	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
 	WHERE 1=1
 	<if test="name != null and name != ''">
-		and h.`name` like concat('%',#{name},'%')
+		and h.`name` like CONCAT('%',#{name},'%')
 	</if>
 	<if test="auditStatus != null">
-		and hr.audit_status = auditStatus
+		and hr.audit_status = #{auditStatus}
 	</if>
 	
 	order by hr.create_time desc
@@ -169,10 +169,10 @@
 	FROM hospital_release hr LEFT JOIN hospital h ON hr.hospital_id = h.id
 	WHERE 1=1
 	<if test="name != null and name != ''">
-		and h.`name` like concat('%',#{name},'%')
+		and h.`name` like CONCAT('%',#{name},'%')
 	</if>
 	<if test="auditStatus != null">
-		and hr.audit_status = auditStatus
+		and hr.audit_status = #{auditStatus}
 	</if>
   </select>
 </mapper>

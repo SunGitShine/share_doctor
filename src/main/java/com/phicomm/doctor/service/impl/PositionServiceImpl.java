@@ -52,6 +52,21 @@ public class PositionServiceImpl implements PositionService{
 		ValidateUtil.notNull(id, "id不能为空");
 		return positionMapper.findById(id);
 	}
+
+	@Override
+	public List<Position> findByPageWeb(Integer status, PageQuery pageQuery) {
+		return positionMapper.findByPageWeb(status, pageQuery);
+	}
+
+	@Override
+	public Integer findCountWeb(Integer status) {
+		return positionMapper.findCountWeb(status);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		positionMapper.delete(id);
+	}
 	
 	
 }

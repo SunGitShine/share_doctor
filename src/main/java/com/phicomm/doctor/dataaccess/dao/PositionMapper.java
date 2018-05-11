@@ -20,4 +20,10 @@ public interface PositionMapper {
 	List<Position> findByPage(@Param("pageQuery")PageQuery pageQuery);
 	
 	Integer findCount();
+	
+	List<Position> findByPageWeb(@Param("status")Integer status, @Param("pageQuery")PageQuery pageQuery);
+	
+	Integer findCountWeb(@Param("status")Integer status);
+	
+	void delete(@Param("id")Integer id);
 }
