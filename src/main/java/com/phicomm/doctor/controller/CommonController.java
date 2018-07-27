@@ -71,8 +71,8 @@ public class CommonController {
 		
 		String phone = ParameterUtil.getString("phone");
 		ValidateUtil.isNotBlank(phone, "手机号不能为空");
-		String smsCode = commonService.sendSmsCode(phone, request.getSession());
-		return ParameterUtil.commonSuccessResult("smsCode", smsCode);
+		commonService.sendSmsCode(phone, request.getSession());
+		return ParameterUtil.commonSuccessResult();
 	}
 	
 	@RequestMapping("/bindPhone")
@@ -108,12 +108,12 @@ public class CommonController {
 	}
 	
 	@RequestMapping("getOpenid")
-	public Result getOpenid() {
+	public Result getOpenid(HttpServletRequest request) {
 		
-		String appid = ParameterUtil.getString("appid");
-		String secret = ParameterUtil.getString("secret");
-		String grantType = ParameterUtil.getString("grantType");
-		String jsCode = ParameterUtil.getString("jsCode");
+		String appid = request.getParameter("appid");
+		String secret = request.getParameter("secret");
+		String grantType = request.getParameter("grantType");
+		String jsCode = request.getParameter("jsCode");
 		
 		String url = "https://api.weixin.qq.com/sns/jscode2session";
 		String params = "appid=" + appid + "&secret=" + secret + "&grant_type=" + grantType + "&js_code=" + jsCode;

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface CommonService {
 
-	String sendSmsCode(String phone, HttpSession session);
+	void sendSmsCode(String phone, HttpSession session);
 	
 	void checkSmsCode(String phone, String smsCode, HttpSession session);
 	

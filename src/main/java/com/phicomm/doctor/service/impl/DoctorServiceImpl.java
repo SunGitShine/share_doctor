@@ -106,6 +106,10 @@ public class DoctorServiceImpl implements DoctorService{
 		ValidateUtil.isNotTrue(doctor.getAuditStatus() != 1, "资料审核状态异常，不能发布");
 		
 		doctorRelese.setDoctorId(doctor.getId());
+		DoctorRelese relese = doctorReleseMapper.getByDoctorId(doctor.getId());
+		if(relese != null) {
+			doctorReleseMapper.delete(relese.getId());
+		}
 		doctorReleseMapper.insert(doctorRelese);
 	}
 

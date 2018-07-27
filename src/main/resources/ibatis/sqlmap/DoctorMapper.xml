@@ -204,6 +204,8 @@
 		AND dr.id IS NOT NULL
 	</if>
 	
+	AND dr.end_time <![CDATA[>=]]> now()
+	
 	order by dr.create_time desc
 
     <if test="pageQuery != null">
@@ -254,5 +256,6 @@
   	<if test="departmentId != null">
 		AND d.department_id = #{departmentId}
 	</if>
+	AND dr.end_time <![CDATA[>=]]> now()
   </select>
 </mapper>

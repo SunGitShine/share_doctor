@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.phicomm.doctor.common.domain.BusinessException;
 import com.phicomm.doctor.common.domain.PageQuery;
 import com.phicomm.doctor.common.domain.Result;
 import com.phicomm.doctor.dataaccess.domain.Doctor;
@@ -60,6 +61,9 @@ public class DoctorController extends BaseController{
 		ValidateUtil.isNotBlank(openid, "openid不能为空");
 		ValidateUtil.notNull(relese.getStartTime(), "开始时间不能为空");
 		ValidateUtil.notNull(relese.getEndTime(), "结束时间不能为空");
+		if(relese.getEndTime().compareTo(relese.getStartTime()) <= 0) {
+			throw new BusinessException("结束时间必须大于开始时间");
+		}
 		
 		doctorService.relese(openid, relese);
 		return ParameterUtil.commonSuccessResult();

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.phicomm.doctor.service.CommonService;
+import com.phicomm.doctor.util.MsgUtil;
 import com.phicomm.doctor.util.ValidateUtil;
 
 @Service("commonService")
@@ -24,13 +25,14 @@ public class CommonServiceImpl implements CommonService{
 	private static final String SMS_CODE_PREFIX = "sms_code_";
 
 	@Override
-	public String sendSmsCode(String phone, HttpSession session) {
+	public void sendSmsCode(String phone, HttpSession session) {
 		
 		String smsCode = getFourRandom();
 		log.info("发送的短信验证码：" + smsCode);
 		//TODO 发送短信
+		String tplValue = "#code#=" + smsCode;
+		MsgUtil.sendSMS("76686", tplValue, phone);
 		session.setAttribute(SMS_CODE_PREFIX + phone, smsCode);
-		return smsCode;
 	}
 	
 	/**
